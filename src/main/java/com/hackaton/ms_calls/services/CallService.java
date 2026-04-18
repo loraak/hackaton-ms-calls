@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import com.hackaton.ms_calls.DTO.EmergencyCallRequest;
 import com.hackaton.ms_calls.models.Call;
 import com.hackaton.ms_calls.repositories.CallRepository;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CallService {
 
     private final CallRepository callRepository;
@@ -32,9 +32,12 @@ public class CallService {
     }
 
     public Call createEmergencyCall(EmergencyCallRequest request) {
+        log.info("Creando llamada de emergencia para userId: {}", request.getUser_id());
+        log.info("Ubicación: lat={}, lng={}", request.getLatitud(), request.getLongitud());
+
         Call call = Call.builder()
-                .userId(request.getUserId())
-                .callType("boton_emergencia")
+                .userId(request.getUser_id())
+                .callType("boton")
                 .status("en_curso")
                 .classification("sin_clasificar")
                 .latitud(request.getLatitud())
@@ -42,6 +45,10 @@ public class CallService {
                 .createdAt(LocalDateTime.now())
                 .transcriptions(new ArrayList<>())
                 .build();
-        return callRepository.save(call);
+
+        Call saved = callRepository.save(call);
+        log.info("Llamada creada con id: {}", saved.getId());
+        return saved;
     }
+
 }

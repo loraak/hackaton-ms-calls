@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.http.MediaType;
 import com.hackaton.ms_calls.DTO.EmergencyCallRequest;
 import com.hackaton.ms_calls.models.Call;
+import com.hackaton.ms_calls.services.CallNotificationService;
 import com.hackaton.ms_calls.services.CallService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class CallController {
 
     private final CallService callService;
+    private final CallNotificationService callNotificationService;
 
     @GetMapping
     public ResponseEntity<List<Call>> getAll() {
@@ -46,5 +49,12 @@ public class CallController {
     public ResponseEntity<Call> createEmergencyCall(@RequestBody EmergencyCallRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(callService.createEmergencyCall(request));
+    }
+
+    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter stream() {
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        callNotificationService.addEmitter(emitter);
+        return emitter;
     }
 }

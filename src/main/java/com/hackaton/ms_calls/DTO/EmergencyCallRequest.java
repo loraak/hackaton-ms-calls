@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class EmergencyCallRequest {
-    private UUID userId;
+    private UUID user_id;
     private String latitud;
     private String longitud;
 }
