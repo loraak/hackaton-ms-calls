@@ -35,6 +35,9 @@ public class Call {
     @Column(name = "status", columnDefinition = "call_status")
     private String status;
 
+    @Column(name = "patient_name")
+    private String patientName;
+
     @Column(name = "classification")
     private String classification;
 
