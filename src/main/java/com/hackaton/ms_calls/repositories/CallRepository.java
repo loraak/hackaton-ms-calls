@@ -2,6 +2,7 @@ package com.hackaton.ms_calls.repositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,6 @@ public interface CallRepository extends JpaRepository<Call, UUID> {
     List<Call> findByClassification(String classification);
 
     List<Call> findByCreatedAtAfter(LocalDateTime dateTime);
+
+    Optional<Call> findTopByUserIdOrderByCreatedAtDesc(UUID userId);
 }
