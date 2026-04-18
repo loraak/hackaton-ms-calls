@@ -41,6 +41,12 @@ public class Call {
     @Column(name = "classification")
     private String classification;
 
+    @Column(name = "latitud")
+    private String latitud;
+
+    @Column(name = "longitud")
+    private String longitud;
+
     @Convert(converter = TranscriptionListConverter.class)
     @Column(name = "transcriptions", columnDefinition = "text")
     private List<Transcription> transcriptions;

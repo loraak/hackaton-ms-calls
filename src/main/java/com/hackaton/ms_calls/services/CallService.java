@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.hackaton.ms_calls.DTO.EmergencyCallRequest;
 import com.hackaton.ms_calls.models.Call;
 import com.hackaton.ms_calls.repositories.CallRepository;
 
@@ -30,14 +31,14 @@ public class CallService {
         return callRepository.findByClassification(classification);
     }
 
-    public Call createEmergencyCall() {
-        UUID defaultUserId = UUID.fromString("1d38411b-3f6b-4706-91f8-23d8b399afb5");
-        
+    public Call createEmergencyCall(EmergencyCallRequest request) {
         Call call = Call.builder()
-                .userId(defaultUserId)
-                .callType("boton")
+                .userId(request.getUserId())
+                .callType("boton_emergencia")
                 .status("en_curso")
-                .classification("roja")
+                .classification("sin_clasificar")
+                .latitud(request.getLatitud())
+                .longitud(request.getLongitud())
                 .createdAt(LocalDateTime.now())
                 .transcriptions(new ArrayList<>())
                 .build();

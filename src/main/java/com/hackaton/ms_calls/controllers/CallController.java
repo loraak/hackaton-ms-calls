@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hackaton.ms_calls.DTO.EmergencyCallRequest;
 import com.hackaton.ms_calls.models.Call;
 import com.hackaton.ms_calls.services.CallService;
 
@@ -41,8 +43,8 @@ public class CallController {
     }
 
     @PostMapping("/emergency")
-    public ResponseEntity<Call> createEmergencyCall() {
+    public ResponseEntity<Call> createEmergencyCall(@RequestBody EmergencyCallRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(callService.createEmergencyCall());
+                .body(callService.createEmergencyCall(request));
     }
 }
