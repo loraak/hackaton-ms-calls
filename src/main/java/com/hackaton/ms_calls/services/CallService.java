@@ -1,6 +1,7 @@
 package com.hackaton.ms_calls.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,9 @@ public class CallService {
 
     public List<Call> getAll() {
         return callRepository.findAll();
+    }
+
+    public List<Call> getByUserId(UUID userId) {
+        return callRepository.findByUserId(userId);
     }
 }
