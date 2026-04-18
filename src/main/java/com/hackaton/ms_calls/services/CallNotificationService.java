@@ -1,24 +1,14 @@
 package com.hackaton.ms_calls.services;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackaton.ms_calls.models.Call;
 import com.hackaton.ms_calls.repositories.CallRepository;
-
-import org.postgresql.PGConnection;
-import org.postgresql.PGNotification;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,6 +21,7 @@ public class CallNotificationService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
     private final CallRepository callRepository;
     private LocalDateTime lastCheck = LocalDateTime.now();
+    private final ObjectMapper objectMapper;
 
     @Scheduled(fixedDelay = 5000)
     public void checkNewCalls() {
@@ -39,7 +30,14 @@ public class CallNotificationService {
         
         if (!newCalls.isEmpty()) {
             log.info("Nuevas llamadas detectadas: {}", newCalls.size());
-            newCalls.forEach(call -> broadcast(call.getId().toString()));
+            newCalls.forEach(call -> {
+                try {
+                    String json = objectMapper.writeValueAsString(call);
+                    broadcast(json);
+                } catch (Exception e) {
+                    log.error("Error serializando call: {}", e.getMessage());
+                }
+            });
         }
     }
 
