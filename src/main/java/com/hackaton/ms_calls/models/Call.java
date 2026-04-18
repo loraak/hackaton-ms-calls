@@ -1,6 +1,5 @@
 package com.hackaton.ms_calls.models;
-
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import com.hackaton.ms_calls.services.TranscriptionListConverter;
@@ -33,22 +32,22 @@ public class Call {
     @Column(name = "call_type")
     private String callType;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "call_status")
     private String status;
 
     @Column(name = "classification")
     private String classification;
 
     @Convert(converter = TranscriptionListConverter.class)
-    @Column(name = "transcriptions", columnDefinition = "jsonb")
+    @Column(name = "transcriptions", columnDefinition = "text")
     private List<Transcription> transcriptions;
 
-    @Column(name = "summary_markdown")
+    @Column(name = "summary_markdown", columnDefinition = "text")
     private String summaryMarkdown;
 
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
 
     @Column(name = "created_at")
-    private Timestamp createdAt; 
+    private LocalDateTime createdAt;
 }
