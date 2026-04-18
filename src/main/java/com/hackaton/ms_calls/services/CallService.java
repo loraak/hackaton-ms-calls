@@ -23,4 +23,8 @@ public class CallService {
     public List<Call> getByUserId(UUID userId) {
         return callRepository.findByUserId(userId);
     }
+
+    public List<Call> getByClassification(String classification) {
+        return callRepository.findByClassification(classification);
+    }
 }

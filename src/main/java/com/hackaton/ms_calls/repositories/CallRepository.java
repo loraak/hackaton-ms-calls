@@ -11,4 +11,6 @@ import com.hackaton.ms_calls.models.Call;
 @Repository
 public interface CallRepository extends JpaRepository<Call, UUID> {
     List<Call> findByUserId(UUID userId);
+
+    List<Call> findByClassification(String classification);
 }

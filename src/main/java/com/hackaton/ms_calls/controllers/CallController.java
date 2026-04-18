@@ -32,4 +32,9 @@ public class CallController {
     public ResponseEntity<List<Call>> getByUserId(@PathVariable UUID userId) {
         return ResponseEntity.ok(callService.getByUserId(userId));
     }
+
+    @GetMapping("/classification/{classification}")
+    public ResponseEntity<List<Call>> getByClassification(@PathVariable String classification) {
+        return ResponseEntity.ok(callService.getByClassification(classification));
+    }
 }
